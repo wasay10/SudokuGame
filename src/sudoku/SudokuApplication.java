@@ -2,6 +2,10 @@ package sudoku;
 
 import java.io.IOException;
 
+import sudoku.buildlogic.SudokuBuildLogic;
+import sudoku.userinterface.IUserInterfaceContract;
+import sudoku.userinterface.UserInterfaceImpl;
+
 public class SudokuApplication extends Application {
     private IUserInterfaceContract.View uiImpl;
 
@@ -19,6 +23,9 @@ public class SudokuApplication extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private static void launch(String[] args) {
     }
 
 }
