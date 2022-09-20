@@ -34,4 +34,7 @@ public class SudokuTextField extends TextField {
         }
     }
 
+    public void setOnKeyPressed(UserInterfaceImpl userInterfaceImpl) {
+    }
+
 }

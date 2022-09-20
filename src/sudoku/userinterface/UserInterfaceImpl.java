@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
+import sudoku.problemdomain.Coordinates;
 import sudoku.problemdomain.SudokuGame;
 import sudoku.userinterface.IUserInterfaceContract.EventListener;
 
@@ -26,17 +27,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     private final Stage stage;
     private final Group root;
 
-    // This HashMap stores the Hash Values (a unique identifier which is
-    // automatically generated;
-    // see java.lang.object in the documentation) of each TextField by their
-    // Coordinates. When a SudokuGame
-    // is given to the updateUI method, we iterate through it by X and Y coordinates
-    // and assign the values to the
-    // appropriate TextField therein. This means we don't need to hold a reference
-    // variable for every god damn
-    // text field in this app; which would be awful.
-    // The Key (<Key, Value> -> <Coordinates, Integer>) will be the HashCode of a
-    // given InputField for ease of lookup
     private HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
 
     private IUserInterfaceContract.EventListener listener;
@@ -52,20 +42,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     private static final Color BOARD_BACKGROUND_COLOR = Color.rgb(224, 242, 241);
     private static final String SUDOKU = "Sudoku";
 
-    /**
-     * Stage and Group are JavaFX specific classes for modifying the UI. Think of
-     * them as containers of various UI
-     * components.
-     *
-     * A HashMap is a data structure which stores key/value pairs. Rather than
-     * creating a member variable for every
-     * SudokuTextField object (all 81 of them), I instead store these references
-     * within a HashMap, and I retrieve
-     * them by using their X and Y Coordinates as a "key" (a unique value used to
-     * look something up).
-     *
-     * @param stage
-     */
     public UserInterfaceImpl(Stage stage) {
         this.stage = stage;
         this.root = new Group();
@@ -87,36 +63,19 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
         stage.show();
     }
 
-    /**
-     * 1. Draw each TextField based on x and y values.
-     * 2. As each TextField is drawn, add it's coordinates (x, y) based on it's Hash
-     * Value to
-     * to the HashMap.
-     *
-     * @param root
-     */
     private void drawTextFields(Group root) {
-        // where to start drawing the numbers
         final int xOrigin = 50;
         final int yOrigin = 50;
-        // how much to move the x or y value after each loop
         final int xAndYDelta = 64;
 
         for (int xIndex = 0; xIndex < 9; xIndex++) {
             for (int yIndex = 0; yIndex < 9; yIndex++) {
                 int x = xOrigin + xIndex * xAndYDelta;
                 int y = yOrigin + yIndex * xAndYDelta;
-                // draw it
                 SudokuTextField tile = new SudokuTextField(xIndex, yIndex);
 
-                // encapsulated style information
                 styleSudokuTile(tile, x, y);
 
-                // Note: Note that UserInterfaceImpl implements EventHandler<ActionEvent> in the
-                // class declaration.
-                // By passing "this" (which means the current instance of UserInterfaceImpl),
-                // when an action occurs,
-                // it will jump straight to "handle(ActionEvent actionEvent)" down below.
                 tile.setOnKeyPressed(this);
 
                 textFieldCoordinates.put(new Coordinates(xIndex, yIndex), tile);
